@@ -1,8 +1,8 @@
-# Microcentrifuge Tube Orientation Detector 🧪
+# Microcentrifuge Tube Orientation Detector 
 
 An automated computer vision pipeline that detects microcentrifuge tubes and estimates their orientation angle `[0, 360)` based on the joint-to-tab direction. This project was developed under extreme data constraints (a dataset of only 70 images) and showcases an iterative architectural evolution to solve the 180° bounding-box ambiguity.
 
-## 🚀 Final Architecture: CenterNet (Current Best)
+##  Final Architecture: CenterNet (Current Best)
 **Validation MAE: 32.0°**
 
 After experimenting with Oriented Bounding Boxes (OBB) and continuous angle regression, the final and most successful architecture utilizes **CenterNet**. 
@@ -11,7 +11,7 @@ Instead of regressing a single abstract rotation value, CenterNet treats the obj
 
 ---
 
-## 🔬 The Engineering Journey: Iterative Models
+## The Engineering Journey: Iterative Models
 
 A core focus of this project was systematically testing different computer vision paradigms against a mathematically complex, low-data environment.
 
@@ -32,10 +32,10 @@ A core focus of this project was systematically testing different computer visio
 
 ---
 
-## 📸 Output Examples
+## Output Examples
 ![Annotated Tube Predictions](assets/your_image_name.png)
 
-## 🏗️ Future Work: Overcoming the Data Bottleneck
+## Future Work: Overcoming the Data Bottleneck
 While the CenterNet architecture successfully reduced the angle error to 32°, the absolute ceiling for accuracy is currently dictated by the 70-image dataset constraint. 
 
 The proposed next step is to build an automated **Synthetic Data Generation Pipeline**. By importing a 3D CAD model of a microcentrifuge tube into a rendering engine (e.g., Blender) via a Python script, we can programmatically drop thousands of tubes onto varying digital surfaces with randomized lighting. This would automatically yield a mathematically perfect, 10,000+ image dataset with exact 360° ground truth orientations, requiring zero manual annotation.
