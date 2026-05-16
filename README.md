@@ -19,13 +19,13 @@ The model achieved exceptional detection accuracy, successfully navigating varyi
 *(To make this work, replace the link below with the actual name of an image you uploaded to your assets folder)*
 ![Annotated Tube Predictions](assets/your_image_name.png)
 
-#Future Work & Proposed Architecture (Phase 3)
+# Future Work & Proposed Architecture (Phase 3)
 
 While the two-stage YOLO-to-ResNet pipeline successfully demonstrated the concept of region-cropping followed by angle regression, the 41° Validation MAE highlights the mathematical limitations of using standard continuous regression on a constrained dataset. 
 
 To achieve true 360° awareness and reduce the angle error, the following architectural upgrades are proposed for Phase 3:
 
-# 1. Shift to 2D Keypoint Detection
+## 1. Shift to 2D Keypoint Detection
 CNNs are fundamentally better at predicting spatial coordinates than abstract rotation values. Instead of regressing a single angle, the problem should be reframed as a Pose Estimation task (e.g., using YOLO-Pose). The model will predict exactly two coordinates:
 * The absolute center of the tube cap $(x_1, y_1)$
 * The tip of the directional plastic tab $(x_2, y_2)$
@@ -33,18 +33,18 @@ CNNs are fundamentally better at predicting spatial coordinates than abstract ro
 Once predicted, the orientation can be calculated deterministically with zero machine learning using the arctangent function:
 $\theta = \arctan2(y_2 - y_1, x_2 - x_1) \times \left( \frac{180}{\pi} \right)$
 
-# 2. Implement Circular Loss & Trigonometric Embeddings
+## 2. Implement Circular Loss & Trigonometric Embeddings
 Standard loss functions (L1/MSE) mathematically break at the 0°/360° boundary (e.g., penalizing the model 358° for predicting 359° when the true angle is 1°). To solve this, the ResNet regression head must use a custom circular loss function:
 $L = \min(|\theta_{pred} - \theta_{true}|, 360 - |\theta_{pred} - \theta_{true}|)$
 
 Alternatively, the model can regress two continuous variables: $\sin(\theta)$ and $\cos(\theta)$, allowing the angle to be recovered post-prediction without boundary discontinuity.
 
-# 3. The "Bin-and-Refine" Classification Architecture
+## 3. The "Bin-and-Refine" Classification Architecture
 To stabilize training, the continuous regression task can be split into a hybrid classification-regression head:
 * **Classification Head:** Divides the 360° circle into 36 bins (10° each) and predicts which bin the tab falls into using Cross-Entropy Loss.
 * **Regression Head:** Predicts the tiny, continuous scalar offset (-5° to +5°) from the center of that chosen bin.
 
-# 4. Overcoming Data Starvation via Synthetic Generation
+## 4. Overcoming Data Starvation via Synthetic Generation
 A 70-image dataset (yielding ~300 tube crops) is insufficient for deep metric learning. To bypass manual annotation bottlenecks, a 3D CAD model of a microcentrifuge tube should be imported into a rendering engine like Blender. A Python script can then automate the generation of 10,000+ training images—randomizing backgrounds, lighting, and tube rotations—while simultaneously exporting a perfect, mathematically exact CSV of the 360° ground truth orientations.
 
 ## 📂 Repository Structure
