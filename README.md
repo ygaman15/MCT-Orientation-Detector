@@ -33,7 +33,6 @@ A core focus of this project was systematically testing different computer visio
 ---
 
 ## 📸 Output Examples
-*(To make this work, replace the link below with the actual name of an image you uploaded to your assets folder)*
 ![Annotated Tube Predictions](assets/your_image_name.png)
 
 ## 🏗️ Future Work: Overcoming the Data Bottleneck
