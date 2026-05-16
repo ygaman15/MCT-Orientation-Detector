@@ -44,5 +44,4 @@ The proposed next step is to build an automated **Synthetic Data Generation Pipe
 ## 📂 Repository Structure
 * `centernet_pipeline.ipynb`: The final, best-performing pipeline utilizing CenterNet.
 * `yolov8_baseline.ipynb`: The initial YOLOv8-OBB detection and OpenCV annotation pipeline.
-* `resnet_experiment.ipynb`: The two-stage YOLO + ResNet-18 regression experiment.
 * `final_predictions.csv`: The extracted center coordinates, bounding boxes, and angles from the best model.
